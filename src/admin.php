@@ -110,8 +110,8 @@ class Admin{
 				"Phone_Number" => "555-5555",
 				"User_Name" => "foo",
 				"User_Password" => self::Encrypt_Password("Bar"),
-				"Admin" => TRUE,
-				"Active" => TRUE,
+				"Admin" => 1,
+				"Active" => 0,
 				"Bio" => "<h1>Sample Bio</h1>"
 				]);
 			if(self::$database->get("account","User_ID",["1=1"]) ==1)
