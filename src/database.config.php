@@ -1,5 +1,5 @@
 <?php
-require_once 'medoo.min.php';
+require_once 'medoo.php';
 
 class DatabaseConfig{
 	//Required

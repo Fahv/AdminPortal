@@ -3,3 +3,15 @@
 	text-align:center;
 	margin:0px auto;
 }
+#preview{
+	width: 702px;
+	float: right;
+	border: 2px dashed;
+	border-radius: 10px 10px 10px 10px;
+}
+
+#sideBar{
+	float:left;
+	border: 2px dashed;
+	border-radius: 10px 10px 10px 10px;
+}
