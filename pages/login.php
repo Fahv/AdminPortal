@@ -4,13 +4,9 @@
 
 if(isset($_POST['submitted']))
 {
-	echo "Submitted";
 	if(Admin::Login())
 	{
-		echo "Login successful";
 		Admin::Redirect("admin-home.php");
-		
-		//$fgmembersite->RedirectToURL("login-home.php");
 	}
 }
 ?>

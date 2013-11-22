@@ -86,6 +86,16 @@ class Admin{
 	public static function GetActiveStatus(){
 		return self::$database->get("account","Active",["User_ID" => $_SESSION['User_ID']]);
 	}
+	public static function UpdateBio(){
+		if(empty($_POST['bio'])){
+			echo "Bio not submitted";
+			return false;
+		}
+		$bio = trim($_POST['bio']);
+		self::$database->update("account",["Bio" =>$bio],["User_ID" => $_SESSION['User_ID']]);
+		var_dump(self::$database->error());
+		return true;
+	}
 
 	private static function Initialize_New_Database(){
 		if(self::$database->get("account","User_ID",["1=1"]) ==0)
