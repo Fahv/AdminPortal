@@ -93,7 +93,6 @@ class Admin{
 		}
 		$bio = trim($_POST['bio']);
 		self::$database->update("account",["Bio" =>$bio],["User_ID" => $_SESSION['User_ID']]);
-		var_dump(self::$database->error());
 		return true;
 	}
 

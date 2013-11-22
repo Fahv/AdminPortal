@@ -8,7 +8,22 @@ if(!Admin::Check_Logged_In()){
 
 if(isset($_POST['submitted']))
 {
-	Admin::UpdateBio();
+	//Admin::Redirect("login.php");
+	//echo "submitted";
+	if(Admin::UpdateBio()){
+		/*$curTime = time() + 5;	//5 seconds?
+		$string = 'Successfully changed your bio';
+		echo '<script>alert("'.$string.'")</script>';
+		while($curTime > time()){
+			}	//Spin*/
+		Admin::Redirect("SuccessBio.php");
+	}
+}
+if(isset($_POST['back']))
+{
+	Admin::Redirect("admin-home.php");
+	//echo "Go Back";
+	//Admin::UpdateBio();
 }
 
 $bio = Admin::GetBio();
@@ -32,9 +47,9 @@ $bio = Admin::GetBio();
 </head>
 <body>
 	<form method="POST">
-		<input type='hidden' name='submitted' id='submitted' value='1'/>
-	<textarea maxlength=512 rows="8" cols="30" name="bio"><?=Admin::GetBio();?></textarea>
-	<input type=submit value="Update Bio"/>
+		<textarea maxlength=512 rows="8" cols="30" name="bio"><?=Admin::GetBio();?></textarea>
+		<input type=submit name='submitted' value="Update Bio"/>
+		<input type=submit name='back' value="Go Back" />
 </form>
 </body>
 </html>
