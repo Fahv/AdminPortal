@@ -8,11 +8,13 @@ class Admin{
 	// Variables
 	private static $database;
 	private static $salt;
+	private static $NameOfSite;
 	
 	public static function Initialize_Class(){
 		self::$database = DatabaseConfig::Initialize_DataBase();
 		self::$salt = "1234567890";
 		self::Initialize_New_Database();
+		self::$NameOfSite = "Admin Portal";
 	}
 	
 	public static function GetSelfScript()
@@ -42,8 +44,6 @@ class Admin{
 		}
 		$_SESSION['User_Name'] = $username;
 		$_SESSION['User_ID'] = self::Get_ID_From_UserName($username);
-		//echo $_SESSION['User_Name'];
-		//var_dump(self::$database->error());
 		return true;
 	}
 
@@ -94,6 +94,41 @@ class Admin{
 		$bio = trim($_POST['bio']);
 		self::$database->update("account",["Bio" =>$bio],["User_ID" => $_SESSION['User_ID']]);
 		return true;
+	}
+	public static function UpdateContactInfo(){
+		$phone = trim($_POST['phone']);
+		$email = trim($_POST['email']);
+		self::$database->update("account",["Phone_Number" =>$phone,"Email" => $email],["User_ID" => $_SESSION['User_ID']]);
+		return true;
+	}
+	
+	public static function RegisterNewUser(){
+		if(empty($_POST['username'])){
+			echo "Username not submitted";
+			return false;
+		}
+		if(empty($_POST['name'])){
+			echo "Name not submitted";
+			return false;
+		}
+		$username = trim($_POST['username']);
+		$name = trim($_POST['name']);
+		$email = trim($_POST['email']);
+		$phone = trim($_POST['phone']);
+		$admin = $_POST['admin'];
+		$active = $_POST['active'];
+		$password = substr(base64_encode($email),0,8);
+		self::$database->insert("account",[
+				"Name" => $name,
+				"Email" => $email,
+				"Phone_Number" => $phone,
+				"User_Name" => $username,
+				"User_Password" => self::Encrypt_Password($password),
+				"Admin" => $admin,
+				"Active" => $active,
+				"Bio" => "<h1>Sample Bio, please change</h1>"
+				]);
+		self::Send_User_Email($email,"New User created on the $NameOfSite",$message);
 	}
 
 	private static function Initialize_New_Database(){
@@ -154,6 +189,13 @@ class Admin{
 	private static function Get_ID_From_UserName($username){
 		$tmp = self::$database->get("account",["User_ID"],["User_Name" =>$username]);
 		return $tmp["User_ID"];
+	}
+	
+	private static function Send_User_Email($to,$subject,$message){
+		$headers = "From: webmaster@example.com\r\nReply-To: webmaster@example.com";
+		
+		$mail_sent = mail( $to, $subject, $message, $headers );
+		return $mail_sent ? TRUE : FALSE;
 	}
 	
 }Admin::Initialize_Class();
