@@ -53,7 +53,7 @@ class Admin{
 	
 	public static function Check_Logged_In(){
 		if(!isset($_SESSION)){ session_start(); }
-		echo $_SESSION['User_ID'];
+		//echo $_SESSION['User_ID'];
 		if(isset($_SESSION['User_ID'])){
 			return true;
 		}
@@ -128,6 +128,7 @@ class Admin{
 				"Bio" => "<h1>Sample Bio, please change</h1>"
 				]);
 		//self::Send_User_Email($email,"New User created on the $NameOfSite",$message);
+		return true;
 	}
 
 	private static function Initialize_New_Database(){
@@ -165,7 +166,7 @@ class Admin{
 				var_dump(self::$database->error());
 			}
 		} else {
-			echo "Account table already created";
+			//echo "Account table already created";
 		}
 	}
 	
