@@ -71,7 +71,6 @@ class Admin{
 
 	public static function GetBio(){
 		$tmp = self::$database->get("account","Bio",["User_ID" => $_SESSION['User_ID']]);
-		//var_dump(self::$database->error());
 		return $tmp;
 	}
 	public static function GetPhoneNumber(){
@@ -128,7 +127,7 @@ class Admin{
 				"Active" => $active,
 				"Bio" => "<h1>Sample Bio, please change</h1>"
 				]);
-		self::Send_User_Email($email,"New User created on the $NameOfSite",$message);
+		//self::Send_User_Email($email,"New User created on the $NameOfSite",$message);
 	}
 
 	private static function Initialize_New_Database(){

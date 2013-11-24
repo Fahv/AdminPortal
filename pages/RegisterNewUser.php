@@ -38,7 +38,7 @@ if(isset($_POST['back']))
 			<lable>Admin?</lable><input type=checkbox name='admin'/>
 			<lable>Active?</lable><input type=checkbox name='active' checked=yes/>
 			<br />
-			<input type=submit name='submitted' value="Update Contact Infomation"/>
+			<input type=submit name='submitted' value="Register New User"/>
 			<input type=submit name='back' value="Go Back" />
 		</form>
 </div>
