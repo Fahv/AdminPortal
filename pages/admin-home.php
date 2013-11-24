@@ -30,6 +30,11 @@ if(!$active){
 	<div id='content'>
 		<div id='sideBar'>
 			<ul>
+				<?php
+					if($admin){
+						echo "You are an admin";
+					}
+				?>
 				<li><a href='ChangeBio.php'>Change Bio</a></li>
 				<li><a href='ChangeProfilePicture.php'>Change Profile Picture</a></li>
 				<li><a href='ChangeContactInformation.php'>Change Contact Information</a></li>
@@ -50,14 +55,7 @@ if(!$active){
 			echo "<img src='$picture' /><br />";
 			echo "$bio <br />";
 			echo "Phone Number: $phone <br />";
-			echo "Email: $email <br />";
-			if($admin){
-				echo "You are an admin";
-			}
-			if(!$active){
-				echo "$active";
-			}
-				
+			echo "Email: $email <br />";			
 			?>
 		</div>
 	</div>
