@@ -139,7 +139,7 @@ class Admin{
 				`Name` varchar(512) NOT NULL,
 				`Email` varchar(512) NOT NULL,
 				`Phone_Number` varchar(512) NOT NULL,
-				`User_Name` varchar(512) NOT NULL,
+				`User_Name` varchar(512) NOT NULL UNIQUE,
 				`User_Password` varchar(512) NOT NULL,
 				`Admin` tinyint(1) NOT NULL,
 				`Active` tinyint(1) NOT NULL,
