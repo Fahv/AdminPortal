@@ -9,7 +9,7 @@ if(!Admin::Check_Logged_In()){
 if(isset($_POST['submitted']))
 {
 	if(Admin::ChangePassword()){
-		Admin::Redirect("SuccessPassword.php");
+		butAdmin::Redirect("SuccessPassword.php");
 		//var_dump(Admin::GetError());
 		//exit;
 	}
