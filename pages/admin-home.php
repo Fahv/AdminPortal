@@ -35,6 +35,7 @@ if(!$active){
 				<li><a href='ChangeBio.php'>Change Bio</a></li>
 				<li><a href='ChangeProfilePicture.php'>Change Profile Picture</a></li>
 				<li><a href='ChangeContactInformation.php'>Change Contact Information</a></li>
+				<li><a href='ChangePassword.php'>Change Password</a></li>
 				<li><a href='Logout.php'>Log Out</a></li>
 			</ul>
 			<?php

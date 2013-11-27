@@ -212,6 +212,33 @@ class Admin{
 			self::Send_User_Email($email,"Forgot Password on the ".self::$NameOfSite,$ForgotPasswordMessage);
 		}
 	}
+	
+	public static function ChangePassword(){
+		if(empty($_POST['oldPass'])){
+			echo "Old password is empty";
+			return false;
+		}
+		if($_POST['newPass1'] != $_POST['newPass2']){
+			echo "Passwords do not match";
+			return false;
+		}
+		if(self::$database->update("account",[
+				"User_Password" =>self::Encrypt_Password($_POST['newPass2']),
+				],[
+				"AND" =>[
+					"User_ID" =>$_SESSION['User_ID'],
+					"User_Password" =>self::Encrypt_Password($_POST['oldPass'])
+					]
+				]) == 1){
+			return true;
+		} else {
+			echo "wrong password";
+			return false;
+		}
+	}
+	public static function GetError(){
+		return self::$database->error();
+	}
 
 	private static function Initialize_New_Database(){
 		if(self::$database->get("account","User_ID",["1=1"]) ==0)
