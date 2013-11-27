@@ -9,12 +9,14 @@ class Admin{
 	private static $database;
 	private static $salt;
 	private static $NameOfSite;
+	private static $NumberOfUsers;
 	
 	public static function Initialize_Class(){
 		self::$database = DatabaseConfig::Initialize_DataBase();
 		self::$salt = "1234567890";
 		self::Initialize_New_Database();
 		self::$NameOfSite = "Admin Portal";
+		self::$NumberOfUsers = self::Get_Number_Of_Users();
 	}
 	
 	public static function GetSelfScript()
@@ -53,7 +55,6 @@ class Admin{
 	
 	public static function Check_Logged_In(){
 		if(!isset($_SESSION)){ session_start(); }
-		//echo $_SESSION['User_ID'];
 		if(isset($_SESSION['User_ID'])){
 			return true;
 		}
@@ -67,6 +68,9 @@ class Admin{
 	
 	public static function GetProfilePicture(){
 		return "../Profile Pictures/".$_SESSION['User_ID'].".png";
+	}
+	public static function GetProfilePictureOfId($id){
+		return "../Profile Pictures/".$id.".png";
 	}
 
 	public static function GetBio(){
@@ -114,8 +118,15 @@ class Admin{
 		$name = trim($_POST['name']);
 		$email = trim($_POST['email']);
 		$phone = trim($_POST['phone']);
-		$admin = $_POST['admin'];
-		$active = $_POST['active'];
+		$admin = 0;
+		$active = 0;
+		if($_POST['admin']  == "on"){
+			$admin = 1;
+		}
+		if($_POST['active']  == "on"){
+			$active = 1;
+		}
+		
 		$password = substr(base64_encode($email),0,8);
 		self::$database->insert("account",[
 				"Name" => $name,
@@ -129,6 +140,35 @@ class Admin{
 				]);
 		//self::Send_User_Email($email,"New User created on the $NameOfSite",$message);
 		return true;
+	}
+
+	public static function GetUsers(){
+		return self::$database->select("account",["User_ID","Name","Email","Active","Admin"],["1=1"]);
+	}
+	
+	public static function UpdateUsers(){
+		echo self::$NumberOfUsers;
+			echo "<pre>";
+			for($i = 1; $i<=self::$NumberOfUsers; $i++){
+				echo " Admin: ".$_POST['admin'.$i];
+				echo " Active: ".$_POST['active'.$i];
+				echo " User_ID: ".$_POST['User_ID'.$i];
+				$admin = 0;
+				$active = 0;
+				if($_POST['admin'.$i]  == "on"){
+					$admin = 1;
+				}
+				if($_POST['active'.$i]  == "on"){
+					$active = 1;
+				}
+				self::$database->update("account",[
+					"Admin" =>$admin,
+					"Active" => $active
+					],[
+					"User_ID" =>$_POST['User_ID'.$i]
+					]);
+			}
+			echo "</pre>";
 	}
 
 	private static function Initialize_New_Database(){
@@ -196,6 +236,10 @@ class Admin{
 		
 		$mail_sent = mail( $to, $subject, $message, $headers );
 		return $mail_sent ? TRUE : FALSE;
+	}
+	
+	private static function Get_Number_Of_Users(){
+		return self::$database->count("account",["1=1"]);
 	}
 	
 }Admin::Initialize_Class();
