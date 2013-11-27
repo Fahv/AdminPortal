@@ -150,9 +150,6 @@ class Admin{
 		echo self::$NumberOfUsers;
 			echo "<pre>";
 			for($i = 1; $i<=self::$NumberOfUsers; $i++){
-				echo " Admin: ".$_POST['admin'.$i];
-				echo " Active: ".$_POST['active'.$i];
-				echo " User_ID: ".$_POST['User_ID'.$i];
 				$admin = 0;
 				$active = 0;
 				if($_POST['admin'.$i]  == "on"){
@@ -167,7 +164,7 @@ class Admin{
 					],[
 					"User_ID" =>$_POST['User_ID'.$i]
 					]);
-			}
+		}
 			echo "</pre>";
 	}
 
@@ -240,6 +237,10 @@ class Admin{
 	
 	private static function Get_Number_Of_Users(){
 		return self::$database->count("account",["1=1"]);
+	}
+	private static function Delete_User($id){
+		self::$database->delete("account",["User_ID"=>$id]);
+		
 	}
 	
 }Admin::Initialize_Class();

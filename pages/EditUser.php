@@ -38,6 +38,7 @@ $UsersArray = Admin::GetUsers();
 			<td>Admin</td>
 		</tr>
 		<?php
+		$alert = "alert('test')";
 		foreach($UsersArray as $User){
 			$active = "";
 			$admin = "";
@@ -53,12 +54,12 @@ $UsersArray = Admin::GetUsers();
 			<td><img src='".Admin::GetProfilePictureOfId($User['User_ID'])."' /></td>
 			<td><input type=checkbox name='active".$User['User_ID']."' $active/></td>
 			<td><input type=checkbox name='admin".$User['User_ID']."' $admin/><input type=hidden name='User_ID".$User['User_ID']."' value='".$User['User_ID']."' /></td>
-			
 		</tr>";
 		}			
 		?>
 	</table>
 	<input type=submit name='submitted' value="Update Users"/>
+	<input type=submit name='back' value="Go Back" />
 	</form>
 	</div>
 </body>
