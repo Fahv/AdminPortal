@@ -9,14 +9,29 @@ class Admin{
 	private static $database;
 	private static $salt;
 	private static $NameOfSite;
+	private static $URLOfSite;
+	private static $URLOfSiteAdmin;
 	private static $NumberOfUsers;
+	private static $AdminEmail;
 	
 	public static function Initialize_Class(){
 		self::$database = DatabaseConfig::Initialize_DataBase();
 		self::$salt = "1234567890";
 		self::Initialize_New_Database();
 		self::$NameOfSite = "Admin Portal";
+		self::$URLOfSite = "localhost/AdminPortal/";
+		self::$URLOfSiteAdmin = "localhost/AdminPortal/";
 		self::$NumberOfUsers = self::Get_Number_Of_Users();
+		self::$AdminEmail = "webmaster@example.com";
+	}
+	
+	public static function SendTestEmail(){
+		$name = "Robert";
+		$username = "rday";
+		$password = "foo";
+		$email = "robertstanday@gmail.com";
+		$WelcomeMessage = self::Get_Forgot_Password_Message($name,$username,$password);
+		return self::Send_User_Email($email,"New User created on the ".self::$NameOfSite,$WelcomeMessage);
 	}
 	
 	public static function GetSelfScript()
@@ -25,7 +40,6 @@ class Admin{
     } 
 	
 	public static function Login(){
-		echo "Start Login";
 		if(empty($_POST['username'])){
 			echo "Enter username";
 			return false;
@@ -93,10 +107,6 @@ class Admin{
 		return self::$database->get("account","Active",["User_ID" => $_SESSION['User_ID']]);
 	}
 	public static function UpdateBio(){
-		if(empty($_POST['bio'])){
-			echo "Bio not submitted";
-			return false;
-		}
 		$bio = trim($_POST['bio']);
 		self::$database->update("account",["Bio" =>$bio],["User_ID" => $_SESSION['User_ID']]);
 		return true;
@@ -141,7 +151,8 @@ class Admin{
 				"Active" => $active,
 				"Bio" => "<h1>Sample Bio, please change</h1>"
 				]);
-		//self::Send_User_Email($email,"New User created on the $NameOfSite",$message);
+		//$WelcomeMessage = self::Get_Welcome_Message($name,$username,$password);
+		//self::Send_User_Email($email,"New User created on the $NameOfSite",$WelcomeMessage);
 		return true;
 	}
 
@@ -167,6 +178,39 @@ class Admin{
 				]);
 		}
 		return true;
+	}
+	
+	public static function ForgotPassword(){
+		if(empty($_POST['username'])){
+			echo "Username not submitted";
+			return false;
+		}
+		if(empty($_POST['name'])){
+			echo "Name not submitted";
+			return false;
+		}
+		$username = trim($_POST['username']);
+		$name = trim($_POST['name']);
+		$email = trim($_POST['email']);
+		
+		if(self::$database->count("account",[
+			"AND" =>[
+				"User_Name"=>$username,
+				"Name"=>$name,
+				"Email"=>$email
+				]])
+		==1){
+			$password = substr(base64_encode($email),0,8);
+			self::$database->update("account",[
+				"User_Password" => self::Encrypt_Password($password)
+				],[ "AND" =>[
+				"User_Name"=>$username,
+				"Name"=>$name,
+				"Email"=>$email
+				]]);
+				$ForgotPasswordMessage = self::Get_Forgot_Password_Message($name,$username,$password);
+			self::Send_User_Email($email,"Forgot Password on the $NameOfSite",$ForgotPasswordMessage);
+		}
 	}
 
 	private static function Initialize_New_Database(){
@@ -230,7 +274,7 @@ class Admin{
 	}
 	
 	private static function Send_User_Email($to,$subject,$message){
-		$headers = "From: webmaster@example.com\r\nReply-To: webmaster@example.com";
+		$headers = "From: webmaster@example.com\r\nReply-To: ".self::$AdminEmail;
 		
 		$mail_sent = mail( $to, $subject, $message, $headers );
 		return $mail_sent ? TRUE : FALSE;
@@ -241,7 +285,43 @@ class Admin{
 	}
 	private static function Delete_User($id){
 		self::$database->delete("account",["User_ID"=>$id]);
-		
+	}
+	private static function Get_Welcome_Message($name,$username,$password){
+		$message = "\n";
+		$message .= "Hello $name,\n";
+		$message .= "\n";
+		$message .= "An account has been created for you on ".self::$NameOfSite;
+		$message .= "\n";
+		$message .= "Username: $username";
+		$message .= "\n";
+		$message .= "Password: $password";
+		$message .= "\n";
+		$message .= "Please go to ".self::$URLOfSiteAdmin." to log in, if you have any questions please feel free to contact us.";
+		$message .= "\n";
+		$message .= "Thank you,";
+		$message .= "\n";
+		$message .= "\n";
+		$message .= "Admin Team at ".self::$NameOfSite;
+		return $message;
+	}
+	private static function Get_Forgot_Password_Message($name,$username,$password){
+		$message = "\n";
+		$message .= "Hello $name,\n";
+		$message .= "\n";
+		$message .= "Either you or someone using this email address forgot the password for this account.";
+		$message .= "\n";
+		$message .= "As we cannot see user passwords, we have reset your account password to:";
+		$message .= "\n";
+		$message .= "$password";
+		$message .= "\n";
+		$message .= "Once you use this password to login to your ".self::$NameOfSite." account.";
+		$message .= "You can should change your password.";
+		$message .= "\n";
+		$message .= "Thank you,";
+		$message .= "\n";
+		$message .= "\n";
+		$message .= "Admin Team at ".self::$NameOfSite;
+		return $message;
 	}
 	
 }Admin::Initialize_Class();

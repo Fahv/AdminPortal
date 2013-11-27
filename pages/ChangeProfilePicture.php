@@ -56,11 +56,12 @@ if(isset($_POST['submitted'])){
 			// we check if everything went OK
 			if ($handle->processed) {
 				// everything was fine !
-				echo '<p class="result">';
+				/*echo '<p class="result">';
 				echo '  <b>File uploaded with success</b><br />';
 				echo '  File: <a href="'.$dir_pics.'/' . $handle->file_dst_name . '">' . $handle->file_dst_name . '</a>';
 				echo '   (' . round(filesize($handle->file_dst_pathname)/256)/4 . 'KB)';
-				echo '</p>';
+				echo '</p>';*/
+				echo "<script>alert('New Profile Picture Uploaded Fine');</script>";
 			} else {
 				// one error occured
 				echo '<p class="result">';
@@ -81,7 +82,6 @@ if(isset($_POST['submitted'])){
 			echo '</p>';
 		}
 	}
-	exit;
 }
 
 $picture = Admin::GetProfilePicture();
