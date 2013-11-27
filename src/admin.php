@@ -152,7 +152,7 @@ class Admin{
 				"Bio" => "<h1>Sample Bio, please change</h1>"
 				]);
 		$WelcomeMessage = self::Get_Welcome_Message($name,$username,$password);
-		self::Send_User_Email($email,"New User created on the $NameOfSite",$WelcomeMessage);
+		self::Send_User_Email($email,"New User created on the ".self::$NameOfSite",$WelcomeMessage);
 		return true;
 	}
 
