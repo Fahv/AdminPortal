@@ -67,10 +67,13 @@ class Admin{
 	}
 	
 	public static function GetProfilePicture(){
-		return "../Profile Pictures/".$_SESSION['User_ID'].".png";
+		return "../Profile Pictures/".$_SESSION['User_ID'].".jpg";
 	}
 	public static function GetProfilePictureOfId($id){
-		return "../Profile Pictures/".$id.".png";
+		return "../Profile Pictures/".$id.".jpg";
+	}
+	public static function GetUser_ID($id){
+		return $_SESSION['User_ID'];
 	}
 
 	public static function GetBio(){
@@ -147,25 +150,23 @@ class Admin{
 	}
 	
 	public static function UpdateUsers(){
-		echo self::$NumberOfUsers;
-			echo "<pre>";
-			for($i = 1; $i<=self::$NumberOfUsers; $i++){
-				$admin = 0;
-				$active = 0;
-				if($_POST['admin'.$i]  == "on"){
-					$admin = 1;
-				}
-				if($_POST['active'.$i]  == "on"){
-					$active = 1;
-				}
-				self::$database->update("account",[
-					"Admin" =>$admin,
-					"Active" => $active
-					],[
-					"User_ID" =>$_POST['User_ID'.$i]
-					]);
+		for($i = 1; $i<=self::$NumberOfUsers; $i++){
+			$admin = 0;
+			$active = 0;
+			if($_POST['admin'.$i]  == "on"){
+				$admin = 1;
+			}
+			if($_POST['active'.$i]  == "on"){
+				$active = 1;
+			}
+			self::$database->update("account",[
+				"Admin" =>$admin,
+				"Active" => $active
+				],[
+				"User_ID" =>$_POST['User_ID'.$i]
+				]);
 		}
-			echo "</pre>";
+		return true;
 	}
 
 	private static function Initialize_New_Database(){

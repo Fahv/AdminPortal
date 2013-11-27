@@ -14,7 +14,7 @@ if ($cli) {
 }
 
 // set variables
-$dir_dest = (isset($_GET['dir']) ? $_GET['dir'] : 'test');
+$dir_dest = (isset($_GET['dir']) ? $_GET['dir'] : '../Profile Pictures');
 $dir_pics = (isset($_GET['pics']) ? $_GET['pics'] : $dir_dest);
 
 if (!$cli && !(isset($_SERVER['HTTP_X_FILE_NAME']) && isset($_SERVER['CONTENT_LENGTH']))) {

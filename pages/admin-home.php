@@ -17,9 +17,6 @@ $active = Admin::GetActiveStatus();
 
 if(!$active){
 	$string = 'Your account has been disabled by an admin \nYour profile will not show up on the main site,\nuntil an admin renables your account';
-	//$patterns = array("/\\\\/", '/\n/', '/\r/', '/\t/', '/\v/', '/\f/');
-	//$replacements = array('\\\\\\', '\n', '\r', '\t', '\v', '\f');
-	//$string = preg_replace($patterns, $replacements, $string);
 	echo '<script>alert("'.$string.'")</script>';
 }
 

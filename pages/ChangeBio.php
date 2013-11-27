@@ -1,5 +1,6 @@
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="../style/style.css" />
 <?php
 require_once('../src/admin.php');
 if(!Admin::Check_Logged_In()){
@@ -37,10 +38,13 @@ $bio = Admin::GetBio();
 </script>
 </head>
 <body>
-	<form method="POST">
-		<textarea maxlength=512 rows="8" cols="30" name="bio"><?=Admin::GetBio();?></textarea>
-		<input type=submit name='submitted' value="Update Bio"/>
-		<input type=submit name='back' value="Go Back" />
-	</form>
+	<div id="change">
+		<h3>Change Bio</h3>
+		<form method="POST">
+			<textarea name="bio"><?=Admin::GetBio();?></textarea>
+			<input type=submit name='submitted' value="Update Bio"/>
+			<input type=submit name='back' value="Go Back" />
+		</form>
+	</div>
 </body>
 </html>
