@@ -46,7 +46,7 @@ if(!$active){
 			Admin only Functions
 			<ul>
 				<li><a href='RegisterNewUser.php'>Register New User</a></li>
-				<li><a href='BlockUser.php'>Block A User</a></li>
+				<li><a href='EditUser.php'>Edit Users</a></li>
 			</ul>";}
 			?>
 		</div>
