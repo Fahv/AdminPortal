@@ -151,8 +151,8 @@ class Admin{
 				"Active" => $active,
 				"Bio" => "<h1>Sample Bio, please change</h1>"
 				]);
-		//$WelcomeMessage = self::Get_Welcome_Message($name,$username,$password);
-		//self::Send_User_Email($email,"New User created on the $NameOfSite",$WelcomeMessage);
+		$WelcomeMessage = self::Get_Welcome_Message($name,$username,$password);
+		self::Send_User_Email($email,"New User created on the $NameOfSite",$WelcomeMessage);
 		return true;
 	}
 
@@ -209,7 +209,7 @@ class Admin{
 				"Email"=>$email
 				]]);
 				$ForgotPasswordMessage = self::Get_Forgot_Password_Message($name,$username,$password);
-			self::Send_User_Email($email,"Forgot Password on the $NameOfSite",$ForgotPasswordMessage);
+			self::Send_User_Email($email,"Forgot Password on the ".self::$NameOfSite,$ForgotPasswordMessage);
 		}
 	}
 
