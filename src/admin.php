@@ -81,10 +81,10 @@ class Admin{
 	}
 	
 	public static function GetProfilePicture(){
-		return "../Profile Pictures/".$_SESSION['User_ID'].".jpg";
+		return "/AdminPortal/Profile Pictures/".$_SESSION['User_ID'].".jpg";
 	}
 	public static function GetProfilePictureOfId($id){
-		return "../Profile Pictures/".$id.".jpg";
+		return "/AdminPortal/Profile Pictures/".$id.".jpg";
 	}
 	public static function GetUser_ID($id){
 		return $_SESSION['User_ID'];
@@ -238,6 +238,9 @@ class Admin{
 	}
 	public static function GetError(){
 		return self::$database->error();
+	}
+	public static function Get_Active_User_Info(){
+		return self::$database->select("account",["User_ID","Name","Email","Phone_Number","Bio"],["Active"=>"1"]);
 	}
 
 	private static function Initialize_New_Database(){
