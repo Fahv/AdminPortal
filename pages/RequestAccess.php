@@ -9,8 +9,8 @@ if(Admin::Check_Logged_In()){
 
 if(isset($_POST['submitted']))
 {
-	if(Admin::RegisterNewUser()){
-		Admin::Redirect("SuccessRegister.php");
+	if(Admin::NewUserRequest()){
+		Admin::Redirect("SuccessNewUserRequest.php");
 	}
 }
 if(isset($_POST['back']))
@@ -34,7 +34,7 @@ if(isset($_POST['back']))
 			<br />
 			<p>Why should you be given an account?</p><textarea></textarea>
 			<br />
-			<input type=submit name='submitted' value="Register New User"/>
+			<input type=submit name='submitted' value="Send for Admin Review"/>
 			<input type=submit name='back' value="Go Back" />
 		</form>
 </div>

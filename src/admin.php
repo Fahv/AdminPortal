@@ -242,6 +242,9 @@ class Admin{
 	public static function Get_Active_User_Info(){
 		return self::$database->select("account",["User_ID","Name","Email","Phone_Number","Bio"],["Active"=>"1"]);
 	}
+	public static function NewUserRequest(){
+		return true;
+	}
 
 	private static function Initialize_New_Database(){
 		if(self::$database->get("account","User_ID",["1=1"]) ==0)
