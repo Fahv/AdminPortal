@@ -64,7 +64,9 @@ class Admin{
 	}
 
 	public static function Count_Entrities(){
-		return self::$database->count("account",["User_ID"=>1]);
+		return self::$database->count("account",array(
+			"User_ID"=>1
+		));
 	}
 	
 	public static function Check_Logged_In(){
@@ -91,30 +93,30 @@ class Admin{
 	}
 
 	public static function GetBio(){
-		$tmp = self::$database->get("account","Bio",["User_ID" => $_SESSION['User_ID']]);
+		$tmp = self::$database->get("account","Bio",array("User_ID" => $_SESSION['User_ID']));
 		return $tmp;
 	}
 	public static function GetPhoneNumber(){
-		return self::$database->get("account","Phone_Number",["User_ID" => $_SESSION['User_ID']]);
+		return self::$database->get("account","Phone_Number",array("User_ID" => $_SESSION['User_ID']));
 	}
 	public static function GetEmail(){
-		return self::$database->get("account","Email",["User_ID" => $_SESSION['User_ID']]);
+		return self::$database->get("account","Email",array("User_ID" => $_SESSION['User_ID']));
 	}
 	public static function GetAdminStatus(){
-		return self::$database->get("account","Admin",["User_ID" => $_SESSION['User_ID']]);
+		return self::$database->get("account","Admin",array("User_ID" => $_SESSION['User_ID']));
 	}
 	public static function GetActiveStatus(){
-		return self::$database->get("account","Active",["User_ID" => $_SESSION['User_ID']]);
+		return self::$database->get("account","Active",array("User_ID" => $_SESSION['User_ID']));
 	}
 	public static function UpdateBio(){
 		$bio = trim($_POST['bio']);
-		self::$database->update("account",["Bio" =>$bio],["User_ID" => $_SESSION['User_ID']]);
+		self::$database->update("account",array("Bio" =>$bio),array("User_ID" => $_SESSION['User_ID']));
 		return true;
 	}
 	public static function UpdateContactInfo(){
 		$phone = trim($_POST['phone']);
 		$email = trim($_POST['email']);
-		self::$database->update("account",["Phone_Number" =>$phone,"Email" => $email],["User_ID" => $_SESSION['User_ID']]);
+		self::$database->update("account",array("Phone_Number" =>$phone,"Email" => $email),array("User_ID" => $_SESSION['User_ID']));
 		return true;
 	}
 	
@@ -141,7 +143,7 @@ class Admin{
 		}
 		
 		$password = substr(base64_encode($email),0,8);
-		self::$database->insert("account",[
+		self::$database->insert("account",array(
 				"Name" => $name,
 				"Email" => $email,
 				"Phone_Number" => $phone,
@@ -150,14 +152,14 @@ class Admin{
 				"Admin" => $admin,
 				"Active" => $active,
 				"Bio" => "<h1>Sample Bio, please change</h1>"
-				]);
+				));
 		$WelcomeMessage = self::Get_Welcome_Message($name,$username,$password);
 		self::Send_User_Email($email,"New User created on the ".self::$NameOfSite,$WelcomeMessage);
 		return true;
 	}
 
 	public static function GetUsers(){
-		return self::$database->select("account",["User_ID","Name","Email","Active","Admin"],["1=1"]);
+		return self::$database->select("account",array("User_ID","Name","Email","Active","Admin"),array("1=1"));
 	}
 	
 	public static function UpdateUsers(){
@@ -170,12 +172,12 @@ class Admin{
 			if($_POST['active'.$i]  == "on"){
 				$active = 1;
 			}
-			self::$database->update("account",[
+			self::$database->update("account",array(
 				"Admin" =>$admin,
 				"Active" => $active
-				],[
+				),array(
 				"User_ID" =>$_POST['User_ID'.$i]
-				]);
+				));
 		}
 		return true;
 	}
@@ -193,21 +195,21 @@ class Admin{
 		$name = trim($_POST['name']);
 		$email = trim($_POST['email']);
 		
-		if(self::$database->count("account",[
-			"AND" =>[
+		if(self::$database->count("account",array(
+			"AND" =>array(
 				"User_Name"=>$username,
 				"Name"=>$name,
 				"Email"=>$email
-				]])
+				)))
 		==1){
 			$password = substr(base64_encode($email),0,8);
-			self::$database->update("account",[
+			self::$database->update("account",array(
 				"User_Password" => self::Encrypt_Password($password)
-				],[ "AND" =>[
+				),array( "AND" =>array(
 				"User_Name"=>$username,
 				"Name"=>$name,
 				"Email"=>$email
-				]]);
+				)));
 				$ForgotPasswordMessage = self::Get_Forgot_Password_Message($name,$username,$password);
 			self::Send_User_Email($email,"Forgot Password on the ".self::$NameOfSite,$ForgotPasswordMessage);
 		}
@@ -222,14 +224,14 @@ class Admin{
 			echo "Passwords do not match";
 			return false;
 		}
-		if(self::$database->update("account",[
+		if(self::$database->update("account",array(
 				"User_Password" =>self::Encrypt_Password($_POST['newPass2']),
-				],[
-				"AND" =>[
+				),array(
+				"AND" =>array(
 					"User_ID" =>$_SESSION['User_ID'],
 					"User_Password" =>self::Encrypt_Password($_POST['oldPass'])
-					]
-				]) == 1){
+					)
+				)) == 1){
 			return true;
 		} else {
 			echo "wrong password";
@@ -240,14 +242,14 @@ class Admin{
 		return self::$database->error();
 	}
 	public static function Get_Active_User_Info(){
-		return self::$database->select("account",["User_ID","Name","Email","Phone_Number","Bio"],["Active"=>"1"]);
+		return self::$database->select("account",array("User_ID","Name","Email","Phone_Number","Bio"),array("Active"=>"1"));
 	}
 	public static function NewUserRequest(){
 		return true;
 	}
 
 	private static function Initialize_New_Database(){
-		if(self::$database->get("account","User_ID",["1=1"]) ==0)
+		if(self::$database->get("account","User_ID",array("1=1")) ==0)
 		{
 			self::$database->query("CREATE TABLE `account` (
 				User_ID int(11) NOT NULL AUTO_INCREMENT,
@@ -263,7 +265,7 @@ class Admin{
 				) ENGINE=InnoDB"
 				);
 			
-			self::$database->insert("account", [
+			self::$database->insert("account", array(
 				"Name" => "foo",
 				"Email" => "foo@bar.com",
 				"Phone_Number" => "555-5555",
@@ -272,8 +274,8 @@ class Admin{
 				"Admin" => 1,
 				"Active" => 0,
 				"Bio" => "<h1>Sample Bio</h1>"
-				]);
-			if(self::$database->get("account","User_ID",["1=1"]) ==1)
+				));
+			if(self::$database->get("account","User_ID",array("1=1")) ==1)
 			{
 				echo "Account table created succesfully";
 			} else {
@@ -294,7 +296,7 @@ class Admin{
 	private static function Check_Login_Creditials($username,$password){
 		//var_dump(self::$database->error());
 		
-		$there = self::$database->has("account",["AND"=> ["User_Password" => $password ,"User_Name" =>$username]]);
+		$there = self::$database->has("account",array("AND"=> array("User_Password" => $password ,"User_Name" =>$username)));
 		
 		if($there){
 			return true;
@@ -302,7 +304,7 @@ class Admin{
 		return false;
 	}
 	private static function Get_ID_From_UserName($username){
-		$tmp = self::$database->get("account",["User_ID"],["User_Name" =>$username]);
+		$tmp = self::$database->get("account",array("User_ID"),array("User_Name" =>$username));
 		return $tmp["User_ID"];
 	}
 	
@@ -314,10 +316,10 @@ class Admin{
 	}
 	
 	private static function Get_Number_Of_Users(){
-		return self::$database->count("account",["1=1"]);
+		return self::$database->count("account",array("1=1"));
 	}
 	private static function Delete_User($id){
-		self::$database->delete("account",["User_ID"=>$id]);
+		self::$database->delete("account",array("User_ID"=>$id));
 	}
 	private static function Get_Welcome_Message($name,$username,$password){
 		$message = "\n";
