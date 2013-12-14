@@ -1,11 +1,7 @@
+<?require_once('../src/admin.php');?>
 <html>
 <head>
 <?php
-require_once('../src/admin.php');
-// Initialize the session.
-// If you are using session_name("something"), don't forget it now!
-session_start();
-
 // Unset all of the session variables.
 $_SESSION = array();
 

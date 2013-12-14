@@ -1,8 +1,8 @@
+<?require_once('../src/admin.php');?>
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="../style/style.css" />
 <?php
-require_once('../src/admin.php');
 if(!Admin::Check_Logged_In()){
 	Admin::Redirect("login.php");
 }
@@ -91,6 +91,7 @@ $picture = Admin::GetProfilePicture();
 <div id="change">
 	<h3>Current Profile Picture</h3>
 	<?php echo "<img src='$picture' /><br />"; ?>
+	<?php //echo "$picture<br />"; ?>
 	<form name="form1" enctype="multipart/form-data" method="post"/>
 		<p><input type="file" size="32" name="my_field" value="" /></p>
 		<p class="button"><input type="hidden" name="action" value="simple" />

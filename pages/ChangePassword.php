@@ -1,15 +1,15 @@
+<?require_once('../src/admin.php');?>
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="../style/style.css" />
 <?php
-require_once('../src/admin.php');
 if(!Admin::Check_Logged_In()){
 	Admin::Redirect("login.php");
 }
 if(isset($_POST['submitted']))
 {
 	if(Admin::ChangePassword()){
-		butAdmin::Redirect("SuccessPassword.php");
+		Admin::Redirect("SuccessPassword.php");
 		//var_dump(Admin::GetError());
 		//exit;
 	}

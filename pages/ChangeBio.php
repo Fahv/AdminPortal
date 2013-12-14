@@ -1,8 +1,9 @@
+<?require_once('../src/admin.php');?>
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="../style/style.css" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 <?php
-require_once('../src/admin.php');
 if(!Admin::Check_Logged_In()){
 	Admin::Redirect("login.php");
 }

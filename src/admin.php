@@ -1,4 +1,5 @@
 <?php
+session_start(); 
 //Include Medoo and database.config
 require_once 'medoo.php';
 require_once 'database.config.php';
@@ -13,6 +14,7 @@ class Admin{
 	private static $URLOfSiteAdmin;
 	private static $NumberOfUsers;
 	private static $AdminEmail;
+	private static $BaseURL;
 	
 	public static function Initialize_Class(){
 		self::$database = DatabaseConfig::Initialize_DataBase();
@@ -23,6 +25,7 @@ class Admin{
 		self::$URLOfSiteAdmin = "localhost/AdminPortal/";
 		self::$NumberOfUsers = self::Get_Number_Of_Users();
 		self::$AdminEmail = "webmaster@example.com";
+		self::$BaseURL = self::Get_Base_URL();
 	}
 	
 	public static function SendTestEmail(){
@@ -78,17 +81,35 @@ class Admin{
 	}
 	
 	public static function Redirect($url){
-		header("Location: $url");
+		echo "<META HTTP-EQUIV='Refresh' content='0;url=$url' />";
 		exit;
 	}
 	
 	public static function GetProfilePicture(){
-		return "/AdminPortal/Profile Pictures/".$_SESSION['User_ID'].".jpg";
+		//$base_url = dirname(dirname(__FILE__)); 
+		//return $base_url."/Profile Pictures/".$_SESSION['User_ID'].".jpg";
+		//return self::CurrentPageURL();
+		//return $_SERVER['SERVER_NAME']."/AdminPortal/Profile Pictures/".$_SESSION['User_ID'].".jpg";
+		$base = $_SERVER['REQUEST_URI'];
+		//$base2 = "/AdminPortal/pages".$_SERVER['SCRIPT_NAME'];
+		//str_replace(
+		$base1 = explode("/",$base);
+		$base2 = $_SERVER['SERVER_NAME'];
+		foreach($base1 as $word){
+			if(strcmp($word,"AdminPortal")==0){
+				break;
+			//$base2 .= "6";
+			}
+			$base2 .= $word;
+			$base2 .= "/";		
+		} 
+		$base2 .= "AdminPortal/Profile Pictures/".$_SESSION['User_ID'].".jpg";
+		return "http://".$base2;
 	}
 	public static function GetProfilePictureOfId($id){
-		return "/AdminPortal/Profile Pictures/".$id.".jpg";
+		return self::$BaseURL."/AdminPortal/Profile Pictures/".$id.".jpg";
 	}
-	public static function GetUser_ID($id){
+	public static function GetUser_ID(){
 		return $_SESSION['User_ID'];
 	}
 
@@ -247,7 +268,6 @@ class Admin{
 	public static function NewUserRequest(){
 		return true;
 	}
-
 	private static function Initialize_New_Database(){
 		if(self::$database->get("account","User_ID",array("1=1")) ==0)
 		{
@@ -357,6 +377,19 @@ class Admin{
 		$message .= "\n";
 		$message .= "Admin Team at ".self::$NameOfSite;
 		return $message;
+	}
+	private function Get_Base_URL(){
+		$base = $_SERVER['REQUEST_URI'];
+		$base1 = explode("/",$base);
+		$base2 = $_SERVER['SERVER_NAME'];
+		foreach($base1 as $word){
+			if(strcmp($word,"AdminPortal")==0){
+				break;
+			}
+			$base2 .= $word;
+			$base2 .= "/";		
+		} 
+		return "http://".$base2; 
 	}
 	
 }Admin::Initialize_Class();
