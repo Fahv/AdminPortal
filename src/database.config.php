@@ -11,7 +11,7 @@ class DatabaseConfig{
 
 	//Optional
 	private static $database_port = 3306;
-	private static $database_charset = 'utf8';
+	private static $database_charset = 'latin1_swedish_ci';
 	// driver_option for connection, r
 	private static $database_options = array(
 		PDO::ATTR_CASE => PDO::CASE_NATURAL
